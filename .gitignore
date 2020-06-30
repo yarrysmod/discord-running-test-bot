@@ -1,0 +1,9 @@
+# the usual
+.idea
+node_modules
+
+# build related
+/dist/
+
+# supposedly secret
+/src/config/api.ts
