@@ -33,7 +33,7 @@ export const calculationDictionary: CalculationDictionaryPreset = {
   miles2km: value => value * MILES_IN_KM,
   km2miles: value => value / MILES_IN_KM,
   fahr2cel: value => (value - FAHRENHEIT_CONSTANT) / FAHRENHEIT_FACTOR,
-  cel2fahr: value => value * FAHRENHEIT_FACTOR - FAHRENHEIT_CONSTANT,
+  cel2fahr: value => value * FAHRENHEIT_FACTOR + FAHRENHEIT_CONSTANT,
 }
 export const commandDescriptionsDictionary: CalculationTextDictionaryPreset = {
   miles2km: 'Convert miles into kilometers',
