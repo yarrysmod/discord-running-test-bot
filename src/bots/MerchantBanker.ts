@@ -5,9 +5,9 @@ import {
   Discord,
 } from "@typeit/discord";
 
-export const REQUEST_START = '?';
+export const REQUEST_START = '.';
 export const HELP_COMMAND = 'merchantBanker';
-export const HELP_MESSAGE = `use ?${HELP_COMMAND} for available commands`;
+export const HELP_MESSAGE = `use ${REQUEST_START}${HELP_COMMAND} for available commands`;
 export type CALC_COMMANDS = 'miles2km' | 'km2miles' | 'fahr2cel' | 'cel2fahr';
 
 export const MILES_IN_KM = 1.609344;
@@ -81,13 +81,13 @@ abstract class MerchantBanker {
   }
 
   private static sendCalcError(requestType: CALC_COMMANDS, message: CommandMessage, exampleValue: string) {
-    message.reply(`That's not a number, chap! Try again. (example: ?${requestType} ${exampleValue})`); // 26.2
+    message.reply(`That's not a number, chap! Try again. (example: ${REQUEST_START}${requestType} ${exampleValue})`); // 26.2
   }
 
   @Command(HELP_COMMAND) help(message: CommandMessage) {
     const commandDescriptions = Object
         .entries(commandDescriptionsDictionary)
-        .map(([command, description]) => `?${command} - ${description}`)
+        .map(([command, description]) => `${REQUEST_START}${command} - ${description}`)
         .join('\n');
 
     return message.channel.send(`Available commands:\n${commandDescriptions}`, {
