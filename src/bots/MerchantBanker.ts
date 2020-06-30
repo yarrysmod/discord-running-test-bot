@@ -16,6 +16,7 @@ export const FAHRENHEIT_FACTOR = 1.8;
 
 export type CalculationDictionaryPreset = { [key in CALC_COMMANDS]: (value: number) => number };
 export type CalculationTextDictionaryPreset = { [key in CALC_COMMANDS]: string };
+export type CalculationOverrideDictionaryPreset = { [key in CALC_COMMANDS]?: {[key: number]: number} };
 
 export const exampleValueDictionary: CalculationTextDictionaryPreset = {
   miles2km: '26.2',
@@ -40,7 +41,17 @@ export const commandDescriptionsDictionary: CalculationTextDictionaryPreset = {
   km2miles: 'Convert kilometers into miles',
   fahr2cel: 'Convert fahrenheit into degrees celsius',
   cel2fahr: 'Convert celsius into degrees fahrenheit',
-}
+};
+export const overrideValueDictionary: CalculationOverrideDictionaryPreset = {
+  miles2km: {
+    13.1: 21.0975,
+    26.2: 42.195
+  },
+  km2miles: {
+    21.1: 13.1,
+    42.2: 26.2,
+  },
+};
 
 @Discord(REQUEST_START) // Decorate the class
 // @ts-ignore
@@ -58,9 +69,15 @@ abstract class MerchantBanker {
       return;
     }
 
-    const outputValue = calculationDictionary[requestType](inputValue).toFixed(2);
+    const overrideValues = overrideValueDictionary[requestType];
+    const overriddenValue = overrideValues && overrideValues[Number(inputValue.toFixed(1))];
+    let outputValue = calculationDictionary[requestType](inputValue).toFixed(2);
 
-    message.reply(`That would be about ${outputValue}${outputValueUnitDictionary[requestType]}.`);
+    message.reply(
+        overriddenValue
+            ? `That would be about ~~${outputValue}~~ ${overriddenValue}${outputValueUnitDictionary[requestType]}. It's the law after all.`
+            : `That would be about ${outputValue}${outputValueUnitDictionary[requestType]}.`
+    );
   }
 
   private static sendCalcError(requestType: CALC_COMMANDS, message: CommandMessage, exampleValue: string) {
