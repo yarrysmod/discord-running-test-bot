@@ -1,7 +1,6 @@
 import {
   Command,
   CommandMessage,
-  CommandNotFound,
   Discord,
 } from "@typeit/discord";
 
@@ -110,8 +109,4 @@ abstract class MerchantBanker {
   @Command('cel2fahr' as CALC_COMMANDS) cel2fahr(message: CommandMessage) {
     return MerchantBanker.processCalcRequest(message);
   }
-
-  @CommandNotFound() commandNotFound(message: CommandMessage) {
-    return message.reply(`You quite sure you got this right? (${HELP_MESSAGE})`);
-  };
 }
